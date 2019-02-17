@@ -18,7 +18,6 @@ package com.alibaba.dubbo.registry.nacos;
 
 import com.alibaba.dubbo.common.Constants;
 import com.alibaba.dubbo.common.URL;
-import com.alibaba.dubbo.common.utils.NetUtils;
 import com.alibaba.dubbo.common.utils.UrlUtils;
 import com.alibaba.dubbo.registry.NotifyListener;
 import com.alibaba.dubbo.registry.Registry;
@@ -30,29 +29,15 @@ import com.alibaba.nacos.api.naming.listener.EventListener;
 import com.alibaba.nacos.api.naming.listener.NamingEvent;
 import com.alibaba.nacos.api.naming.pojo.Instance;
 import com.alibaba.nacos.api.naming.pojo.ListView;
-
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+import java.util.*;
+import java.util.concurrent.*;
 
-import static com.alibaba.dubbo.common.Constants.CONFIGURATORS_CATEGORY;
-import static com.alibaba.dubbo.common.Constants.CONSUMERS_CATEGORY;
-import static com.alibaba.dubbo.common.Constants.PROVIDERS_CATEGORY;
-import static com.alibaba.dubbo.common.Constants.ROUTERS_CATEGORY;
+import static com.alibaba.dubbo.common.Constants.*;
 
 /**
  * Nacos {@link Registry}
@@ -426,8 +411,8 @@ public class NacosRegistry extends FailbackRegistry {
         String category = url.getParameter(Constants.CATEGORY_KEY, Constants.DEFAULT_CATEGORY);
         URL newURL = url.addParameter(Constants.CATEGORY_KEY, category);
         newURL = newURL.addParameter(Constants.PROTOCOL_KEY, url.getProtocol());
-        String ip = NetUtils.getLocalHost();
-        int port = newURL.getParameter(Constants.BIND_PORT_KEY, url.getPort());
+        String ip = url.getHost();
+        int port = url.getPort();
         Instance instance = new Instance();
         instance.setIp(ip);
         instance.setPort(port);
