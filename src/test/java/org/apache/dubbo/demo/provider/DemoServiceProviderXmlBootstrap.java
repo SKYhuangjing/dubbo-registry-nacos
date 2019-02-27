@@ -14,29 +14,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.alibaba.dubbo.demo.consumer;
+package org.apache.dubbo.demo.provider;
 
-import com.alibaba.dubbo.demo.service.DemoService;
-
+import org.apache.dubbo.demo.service.DemoService;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.io.IOException;
 
 /**
- * {@link DemoService} consumer demo XML bootstrap
+ * {@link DemoService} provider demo XML bootstrap
  */
-public class DemoServiceConsumerXmlBootstrap {
+public class DemoServiceProviderXmlBootstrap {
 
     public static void main(String[] args) throws IOException {
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext();
-        context.setConfigLocation("/META-INF/spring/dubbo-consumer-context.xml");
+        context.setConfigLocation("/META-INF/spring/dubbo-provider-context.xml");
         context.refresh();
-        System.out.println("DemoService consumer (XML) is starting...");
-        DemoService demoService = context.getBean("demoService", DemoService.class);
-        for (int i = 0; i < 10; i++) {
-            System.out.println(demoService.sayName("小马哥（mercyblitz）"));
-        }
+        System.out.println("DemoService provider (XML) is starting...");
         System.in.read();
-        context.close();
     }
 }

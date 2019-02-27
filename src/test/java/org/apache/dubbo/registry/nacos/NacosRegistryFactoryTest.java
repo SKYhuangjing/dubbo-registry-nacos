@@ -14,15 +14,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.alibaba.dubbo.demo.service;
+package org.apache.dubbo.registry.nacos;
 
 /**
- * DemoService
+ * {@link NacosRegistryFactory} Test
  *
  * @since 2.6.5
  */
-public interface DemoService {
-
-    String sayName(String name);
-
+public class NacosRegistryFactoryTest {
 }

@@ -14,24 +14,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.alibaba.dubbo.demo.provider;
+package org.apache.dubbo.demo.provider;
 
-import com.alibaba.dubbo.demo.service.DemoService;
-
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.apache.dubbo.demo.service.DemoService;
+import org.apache.dubbo.config.spring.context.annotation.EnableDubbo;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.PropertySource;
 
 import java.io.IOException;
 
 /**
- * {@link DemoService} provider demo XML bootstrap
+ * {@link DemoService} provider demo
  */
-public class DemoServiceProviderXmlBootstrap {
+@EnableDubbo(scanBasePackages = "com.alibaba.dubbo.demo.service")
+@PropertySource(value = "classpath:/provider-config.properties")
+public class DemoServiceProviderBootstrap {
 
     public static void main(String[] args) throws IOException {
-        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext();
-        context.setConfigLocation("/META-INF/spring/dubbo-provider-context.xml");
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
+        context.register(DemoServiceProviderBootstrap.class);
         context.refresh();
-        System.out.println("DemoService provider (XML) is starting...");
+        System.out.println("DemoService provider is starting...");
         System.in.read();
     }
 }
