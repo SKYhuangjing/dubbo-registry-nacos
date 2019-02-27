@@ -415,6 +415,7 @@ public class NacosRegistry extends FailbackRegistry {
         String category = url.getParameter(Constants.CATEGORY_KEY, Constants.DEFAULT_CATEGORY);
         URL newURL = url.addParameter(Constants.CATEGORY_KEY, category);
         newURL = newURL.addParameter(Constants.PROTOCOL_KEY, url.getProtocol());
+        newURL = newURL.addParameter(Constants.INTERFACE_KEY, url.getServiceInterface());
         String ip = url.getHost();
         int port = url.getPort();
         Instance instance = new Instance();
@@ -431,14 +432,18 @@ public class NacosRegistry extends FailbackRegistry {
 
     private String getServiceName(URL url, String category) {
         StringBuilder serviceNameBuilder = new StringBuilder(category);
-        appendIfPresent(serviceNameBuilder, url, Constants.INTERFACE_KEY);
+        appendIfPresent(serviceNameBuilder, url, Constants.INTERFACE_KEY, url.getPath());
         appendIfPresent(serviceNameBuilder, url, Constants.VERSION_KEY);
         appendIfPresent(serviceNameBuilder, url, Constants.GROUP_KEY);
         return serviceNameBuilder.toString();
     }
 
     private void appendIfPresent(StringBuilder target, URL url, String parameterName) {
-        String parameterValue = url.getParameter(parameterName);
+        appendIfPresent(target, url, parameterName, null);
+    }
+
+    private void appendIfPresent(StringBuilder target, URL url, String parameterName, String defaultValue) {
+        String parameterValue = url.getParameter(parameterName, defaultValue);
         if (!StringUtils.isBlank(parameterValue)) {
             target.append(SERVICE_NAME_SEPARATOR).append(parameterValue);
         }
